@@ -8,13 +8,13 @@ XCODE_SELECT_COMMAND=$(/usr/bin/which ${XCODE_SELECT})
 
 if [ ! -x "${XCODE_SELECT_COMMAND}" ]; then echo "$0:$LINENO: error: The XCODE_SELECT command, '${XCODE_SELECT}', does not exist.  Aborting."; exit 1; fi;
 
-DEVTOOLS_PATH_SET=${DEVTOOLS_PATH:+"Yes"}
-if [ "${DEVTOOLS_PATH_SET}" == "Yes" ]; then DEVTOOLS_PATH_SET_BY="determined by the environment variable DEVTOOLS_PATH"; else DEVTOOLS_PATH_SET_BY="determined automatically by the command '${XCODE_SELECT}'"; fi;
-DEVTOOLS_PATH=$(/usr/bin/perl -e 'use Cwd qw(abs_path); my $p = abs_path($ARGV[0]); print "$p\n";' "${DEVTOOLS_PATH:-`${XCODE_SELECT_COMMAND} -print-path`}")
+DEVELOPER_DIR_SET=${DEVELOPER_DIR:+"Yes"}
+if [ "${DEVELOPER_DIR_SET}" == "Yes" ]; then DEVELOPER_DIR_SET_BY="determined by the environment variable DEVELOPER_DIR"; else DEVELOPER_DIR_SET_BY="determined automatically by the command '${XCODE_SELECT}'"; fi;
+DEVELOPER_DIR=$(/usr/bin/perl -e 'use Cwd qw(abs_path); my $p = abs_path($ARGV[0]); print "$p\n";' "${DEVELOPER_DIR:-`${XCODE_SELECT_COMMAND} -print-path`}")
 
 IPHONEOS_BUILD_PLUGIN="iPhoneOS Build System Support.xcplugin"
-XCODE3_PLUGIN_PATH="${DEVTOOLS_PATH}/Platforms/iPhoneOS.platform/Developer/Library/Xcode/Plug-ins"
-XCODE4_PLUGIN_PATH="${DEVTOOLS_PATH}/Platforms/iPhoneOS.platform/Developer/Library/Xcode/PrivatePlugIns"
+XCODE3_PLUGIN_PATH="${DEVELOPER_DIR}/Platforms/iPhoneOS.platform/Developer/Library/Xcode/Plug-ins"
+XCODE4_PLUGIN_PATH="${DEVELOPER_DIR}/Platforms/iPhoneOS.platform/Developer/Library/Xcode/PrivatePlugIns"
 if [ -d "${XCODE4_PLUGIN_PATH}/${IPHONEOS_BUILD_PLUGIN}" ]; then XCODE_VERSION="4"; XCODE_PLUGIN_PATH=${XCODE4_PLUGIN_PATH}; else XCODE_VERSION="3"; XCODE_PLUGIN_PATH=${XCODE3_PLUGIN_PATH}; fi;
 
 IPHONEOS_BUILD_PLUGIN_PATH="${XCODE_PLUGIN_PATH}/${IPHONEOS_BUILD_PLUGIN}"
@@ -51,22 +51,22 @@ PLUGIN_XCODE_ENGLISH_LPROJ_NATIVE_BUILD_SYSTEM_STRINGS="${IPHONEOS_BUILD_PLUGIN_
 /usr/bin/diff -q "${PLUGIN_SOURCE_NATIVE_BUILD_SYSTEM_XCSPEC}"                "${PLUGIN_XCODE_NATIVE_BUILD_SYSTEM_XCSPEC}"                >/dev/null 2>&1; DIFF_NATIVE_BUILD_SYSTEM_XCSPEC=$?;
 /usr/bin/diff -q "${PLUGIN_SOURCE_ENGLISH_LPROJ_NATIVE_BUILD_SYSTEM_STRINGS}" "${PLUGIN_XCODE_ENGLISH_LPROJ_NATIVE_BUILD_SYSTEM_STRINGS}" >/dev/null 2>&1; DIFF_ENGLISH_LPROJ_NATIVE_BUILD_SYSTEM_STRINGS=$?;
 
-if [ ${DIFF_COPYPNG} == 0 ] && [ ${DIFF_COPYPNGFILE_XCSPEC} == 0 ] && [ ${DIFF_NATIVE_BUILD_SYSTEM_XCSPEC} == 0 ] && [ ${DIFF_ENGLISH_LPROJ_NATIVE_BUILD_SYSTEM_STRINGS} == 0 ]; then echo "The enhanced 'Compress PNG Files' Xcode iPhoneOS Build System Support Plug-In in '${DEVTOOLS_PATH}' is up to date."; exit 0; fi;
+if [ ${DIFF_COPYPNG} == 0 ] && [ ${DIFF_COPYPNGFILE_XCSPEC} == 0 ] && [ ${DIFF_NATIVE_BUILD_SYSTEM_XCSPEC} == 0 ] && [ ${DIFF_ENGLISH_LPROJ_NATIVE_BUILD_SYSTEM_STRINGS} == 0 ]; then echo "The enhanced 'Compress PNG Files' Xcode iPhoneOS Build System Support Plug-In in '${DEVELOPER_DIR}' is up to date."; exit 0; fi;
 
 if [ "${UID}" != 0 ]; then
-  if [ "${DEVTOOLS_PATH_SET}" == "Yes" ]; then SUDO_DEVTOOLS="DEVTOOLS_PATH=\"\$DEVTOOLS_PATH\" "; else SUDO_DEVTOOLS=""; fi;
+  if [ "${DEVELOPER_DIR_SET}" == "Yes" ]; then SUDO_DEVTOOLS="DEVELOPER_DIR=\"\$DEVELOPER_DIR\" "; else SUDO_DEVTOOLS=""; fi;
   echo "Warning: In general, this script must be executed as the super user in order to modify the Xcode Plug-In files.\nWarning: Consider running this script as 'sudo ${SUDO_DEVTOOLS}\"$0\"' instead.\n";
 fi;
 
-echo "Installing in to the Xcode Developer Tools at '${DEVTOOLS_PATH}', which was ${DEVTOOLS_PATH_SET_BY}.\n"
-if [ "${DEVTOOLS_PATH_SET}" != "Yes" ]; then
-  echo "Note: You can override this location by setting the environment variable DEVTOOLS_PATH if you have multiple versions of the Xcode Developer Tools installed.\n";
+echo "Installing in to the Xcode Developer Tools at '${DEVELOPER_DIR}', which was ${DEVELOPER_DIR_SET_BY}.\n"
+if [ "${DEVELOPER_DIR_SET}" != "Yes" ]; then
+  echo "Note: You can override this location by setting the environment variable DEVELOPER_DIR if you have multiple versions of the Xcode Developer Tools installed.\n";
   read -p "Do you want to install in to this directory? (y/n)? "
   if [ $REPLY != "y" ] && [ $REPLY != "Y" ] && [ $REPLY != "yes" ] && [ $REPLY != "YES" ]; then echo "Install canceled."; exit 1; fi;
   echo
 fi;
 
-if [ ! -d "${DEVTOOLS_PATH}" ];              then echo "$0:$LINENO: error: The DEVTOOLS_PATH directory, '${DEVTOOLS_PATH}', does not exist.  Aborting.";                                      exit 1; fi;
+if [ ! -d "${DEVELOPER_DIR}" ];              then echo "$0:$LINENO: error: The DEVELOPER_DIR directory, '${DEVELOPER_DIR}', does not exist.  Aborting.";                                      exit 1; fi;
 if [ ! -d "${XCODE_PLUGIN_PATH}" ];          then echo "$0:$LINENO: error: The Xcode Plug-In directory, '${XCODE_PLUGIN_PATH}', does not exist.  Aborting.";                                  exit 1; fi;
 if [ ! -d "${IPHONEOS_BUILD_PLUGIN_PATH}" ]; then echo "$0:$LINENO: error: The iPhoneOS Build System Support Plug-In directory, '${IPHONEOS_BUILD_PLUGIN_PATH}', does not exist.  Aborting."; exit 1; fi;
 
