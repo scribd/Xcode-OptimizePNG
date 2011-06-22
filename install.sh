@@ -53,12 +53,14 @@ PLUGIN_XCODE_ENGLISH_LPROJ_NATIVE_BUILD_SYSTEM_STRINGS="${IPHONEOS_BUILD_PLUGIN_
 
 if [ ${DIFF_COPYPNG} == 0 ] && [ ${DIFF_COPYPNGFILE_XCSPEC} == 0 ] && [ ${DIFF_NATIVE_BUILD_SYSTEM_XCSPEC} == 0 ] && [ ${DIFF_ENGLISH_LPROJ_NATIVE_BUILD_SYSTEM_STRINGS} == 0 ]; then echo "The enhanced 'Compress PNG Files' Xcode iPhoneOS Build System Support Plug-In in '${DEVELOPER_DIR}' is up to date."; exit 0; fi;
 
+if [ "$1" == "-check" ]; then echo "The enhanced 'Compress PNG Files' Xcode iPhoneOS Build System Support Plug-In in '${DEVELOPER_DIR}' requires updating."; exit 1; fi;
+
 if [ "${UID}" != 0 ]; then
   if [ "${DEVELOPER_DIR_SET}" == "Yes" ]; then SUDO_DEVTOOLS="DEVELOPER_DIR=\"\$DEVELOPER_DIR\" "; else SUDO_DEVTOOLS=""; fi;
   echo "Warning: In general, this script must be executed as the super user in order to modify the Xcode Plug-In files.\nWarning: Consider running this script as 'sudo ${SUDO_DEVTOOLS}\"$0\"' instead.\n";
 fi;
 
-echo "Installing in to the Xcode Developer Tools at '${DEVELOPER_DIR}', which was ${DEVELOPER_DIR_SET_BY}.\n"
+echo "Note: Installing in to the Xcode Developer Tools at '${DEVELOPER_DIR}', which was ${DEVELOPER_DIR_SET_BY}.\n"
 if [ "${DEVELOPER_DIR_SET}" != "Yes" ]; then
   echo "Note: You can override this location by setting the environment variable DEVELOPER_DIR if you have multiple versions of the Xcode Developer Tools installed.\n";
   read -p "Do you want to install in to this directory? (y/n)? "
@@ -78,8 +80,8 @@ cd "${XCODE_PLUGIN_PATH}"
 /usr/bin/tar -czf "${IPHONEOS_BUILD_PLUGIN_TAR_BACKUP}" "${IPHONEOS_BUILD_PLUGIN}"
 if [ $? != 0 ]; then echo "$0:$LINENO: error: Unable create a backup of '${IPHONEOS_BUILD_PLUGIN_PATH}'.  Aborting."; exit 1; fi;
 
-echo "A backup of     '${IPHONEOS_BUILD_PLUGIN_PATH}'"
-echo "was created at: '${XCODE_PLUGIN_PATH}/${IPHONEOS_BUILD_PLUGIN_TAR_BACKUP}'"
+echo "Note: A backup of     '${IPHONEOS_BUILD_PLUGIN_PATH}'"
+echo "Note: was created at: '${XCODE_PLUGIN_PATH}/${IPHONEOS_BUILD_PLUGIN_TAR_BACKUP}'"
 
 
 if [ ! -d "${IPHONEOS_BUILD_PLUGIN_RESOURCES_PATH}" ];             then echo "$0:$LINENO: error: The Xcode iPhoneOS Build System Support Plug-In Resources directory, '${IPHONEOS_BUILD_PLUGIN_RESOURCES_PATH}', does not exist.  Aborting.";                   exit 1; fi;
@@ -99,7 +101,7 @@ if [ $? != 0 ]; then echo "$0:$LINENO: error: Unable to copy '${PLUGIN_SOURCE_NA
 cp -p "${PLUGIN_SOURCE_ENGLISH_LPROJ_NATIVE_BUILD_SYSTEM_STRINGS}" "${PLUGIN_XCODE_ENGLISH_LPROJ_NATIVE_BUILD_SYSTEM_STRINGS}" >/dev/null 2>&1
 if [ $? != 0 ]; then echo "$0:$LINENO: error: Unable to copy '${PLUGIN_SOURCE_ENGLISH_LPROJ_NATIVE_BUILD_SYSTEM_STRINGS}' to '${PLUGIN_XCODE_ENGLISH_LPROJ_NATIVE_BUILD_SYSTEM_STRINGS}'.  Aborting"; exit 1; fi;
 
-echo "\nInstallation was successful!"
+echo "\nNote: Installation was successful!"
 
 XCODE_RUNNING=$(/usr/bin/osascript -e 'if application "Xcode" is running then return "Yes"')
 if [ "${XCODE_RUNNING}" == "Yes" ]; then echo "\nWarning: You must exit and restart Xcode before the new 'Compress PNG Files' Build Setting options are available."; fi;

@@ -37,7 +37,7 @@ Warning: Consider running this script as 'sudo "./install.sh"' instead.
 
 Installing in to the Xcode Developer Tools at '/Developer', which was determined automatically by the command 'xcode-select'.
 
-Note: You can override this location by setting the environment variable DEVTOOLS_PATH if you have multiple versions of the Xcode Developer Tools installed.
+Note: You can override this location by setting the environment variable DEVELOPER_DIR if you have multiple versions of the Xcode Developer Tools installed.
 
 Do you want to install in to this directory? (y/n)? <b>y &crarr;</b>
 
@@ -56,7 +56,7 @@ shell% <b>sudo "./install.sh" &crarr;</b>
 Password: &nbsp;<i><b>Enter your password, it will not be displayed.</b></i>
 Installing in to the Xcode Developer Tools at '/Developer', which was determined automatically by the command 'xcode-select'.
 
-Note: You can override this location by setting the environment variable DEVTOOLS_PATH if you have multiple versions of the Xcode Developer Tools installed.
+Note: You can override this location by setting the environment variable DEVELOPER_DIR if you have multiple versions of the Xcode Developer Tools installed.
 
 Do you want to install in to this directory? (y/n)? <b>y &crarr;</b>
 
@@ -73,17 +73,17 @@ If `Xcode.app` is not running at the time that `install.sh` is executed, the las
 
 ### Installing in a different version of the Xcode Development Tools 
 
-If you have multiple versions of the Xcode Development Tools installed on your system, you can install the Xcode iPhone PNG Optimizer Enhacement in the different Xcode versions using the environment variable `DEVTOOLS_PATH`.
+If you have multiple versions of the Xcode Development Tools installed on your system, you can install the Xcode iPhone PNG Optimizer Enhacement in the different Xcode versions using the environment variable `DEVELOPER_DIR`.
 
-**Important:** When you set the `DEVTOOLS_PATH` environment variable, the `install.sh` script will not ask if the directory that `DEVTOOLS_PATH` is set to is really the directory you want to install in to.
+**Important:** When you set the `DEVELOPER_DIR` environment variable, the `install.sh` script will not ask if the directory that `DEVELOPER_DIR` is set to is really the directory you want to install in to.
 
 <pre>
-shell% <b>setenv DEVTOOLS_PATH "/Developer4" &crarr;</b>
+shell% <b>setenv DEVELOPER_DIR "/Developer4" &crarr;</b>
 shell% <b>./install.sh &crarr;</b>
 Warning: In general, this script must be executed as the super user in order to modify the Xcode Plug-In files.
-Warning: Consider running this script as 'sudo DEVTOOLS_PATH="$DEVTOOLS_PATH" "./install.sh"' instead.
+Warning: Consider running this script as 'sudo DEVELOPER_DIR="$DEVELOPER_DIR" "./install.sh"' instead.
 
-Installing in to the Xcode Developer Tools at '/Developer4', which was determined by the environment variable DEVTOOLS_PATH.
+Installing in to the Xcode Developer Tools at '/Developer4', which was determined by the environment variable DEVELOPER_DIR.
 
 A backup of     '/Developer4/Platforms/iPhoneOS.platform/Developer/Library/Xcode/PrivatePlugIns/iPhoneOS Build System Support.xcplugin'
 was created at: '/Developer4/Platforms/iPhoneOS.platform/Developer/Library/Xcode/PrivatePlugIns/iPhoneOS_xcplugin_backup_20110621193634_41339.tar.gz'
@@ -91,15 +91,15 @@ was created at: '/Developer4/Platforms/iPhoneOS.platform/Developer/Library/Xcode
 shell% &#9612;
 </pre>
 
-Like the example without `DEVTOOLS_PATH`, this installation failed because the `install.sh` script requires super-user privliges in order to update certain Xcode files.  When re-run using `sudo DEVTOOLS_PATH="$DEVTOOLS_PATH"`:
+Like the example without `DEVELOPER_DIR`, this installation failed because the `install.sh` script requires super-user privliges in order to update certain Xcode files.  When re-run using `sudo DEVELOPER_DIR="$DEVELOPER_DIR"`:
 
 **Important:** `sudo` will execute the `install.sh` script with super-user (i.e., `root`) privileges.
 
 <pre>
-shell% <b>setenv DEVTOOLS_PATH "/Developer4" &crarr;</b>
-shell% <b>sudo DEVTOOLS_PATH="$DEVTOOLS_PATH" "./install.sh" &crarr;</b>
+shell% <b>setenv DEVELOPER_DIR "/Developer4" &crarr;</b>
+shell% <b>sudo DEVELOPER_DIR="$DEVELOPER_DIR" "./install.sh" &crarr;</b>
 Password: &nbsp;<i><b>Enter your password, it will not be displayed.</b></i>
-Installing in to the Xcode Developer Tools at '/Developer4', which was determined by the environment variable DEVTOOLS_PATH.
+Installing in to the Xcode Developer Tools at '/Developer4', which was determined by the environment variable DEVELOPER_DIR.
 
 A backup of     '/Developer4/Platforms/iPhoneOS.platform/Developer/Library/Xcode/PrivatePlugIns/iPhoneOS Build System Support.xcplugin'
 was created at: '/Developer4/Platforms/iPhoneOS.platform/Developer/Library/Xcode/PrivatePlugIns/iPhoneOS_xcplugin_backup_20110621193734_41355.tar.gz'
@@ -133,7 +133,7 @@ To fix this, you will need to build the Scribd fork of the [AdvanceCOMP utilitie
 
 ## Uninstalling
 
-The `install.sh` script makes a back up of the `iPhoneOS Build System Support.xcplugin` directory using `tar` and stores it in <code><i>DEVTOOLS_PATH</i>/Platforms/iPhoneOS.platform/Developer/Library/Xcode/Plug-ins/</code>.
+The `install.sh` script makes a back up of the `iPhoneOS Build System Support.xcplugin` directory using `tar` and stores it in <code><i>DEVELOPER_DIR</i>/Platforms/iPhoneOS.platform/Developer/Library/Xcode/Plug-ins/</code>.
 
 The name of the `.tar` backup is <code>iPhoneOS\_xcplugin\_backup\_<i>YearMonthDayHourMinuteSecond</i>\_<i>Random</i>.tar.gz</code>.
 
@@ -141,7 +141,7 @@ The `install.sh` script makes a back up of the `iPhoneOS Build System Support.xc
 
  What                            | Directory or File
 ---------------------------------|------------
-Directory containing `.tar` file | <code><i>DEVTOOLS_PATH</i>/Platforms/iPhoneOS.platform/Developer/Library/Xcode/Plug-ins/</code>
+Directory containing `.tar` file | <code><i>DEVELOPER_DIR</i>/Platforms/iPhoneOS.platform/Developer/Library/Xcode/Plug-ins/</code>
 `.tar` file naming scheme        | <code>iPhoneOS\_xcplugin\_backup\_<i>YearMonthDayHourMinuteSecond</i>\_<i>Random</i>.tar.gz</code>
 
 The `install.sh` script also prints this information:
