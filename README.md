@@ -176,12 +176,12 @@ To use the Xcode iPhone PNG Optimizer Enhancement, simply open your the Build Se
 
 The following results are taken from a real-world iPhone application.  The amount of additional optimization that is possible will vary for each project based on a number of difficult to quantify factors.  The results for each project may differ, sometimes dramatically, from the results below.  You are strongly encouraged to verify whether or not a setting &ge; `Medium` provides any worthwhile benefit for your project.
 
-  Setting  | Size<sup>&dagger;</sup> | &Delta; `Low` | &Delta; `High` | Time<sup>&Dagger;</sup> | &Delta; `Low` | &Delta; `High` 
-:----------|------------------------:|---------- ---:|---------------:|------------------------:|--------------:|---------------:
- `Low`     |                 9740448 |        100.0% |         125.6% |                      46 |        100.0% |          35.9%
- `Medium`  |                 8969108 |         92.1% |         115.6% |                     101 |        219.6% |          78.9%
- `High`    |                 7756942 |         79.6% |         100.0% |                     128 |        260.9% |         100.0%
- `Extreme` |                 7418479 |         76.2% |          95.6% |                     751 |       1632.6% |         586.7%
+|  Setting  | Size<sup>&dagger;</sup> | &Delta; `Low` | &Delta; `High` | Time<sup>&Dagger;</sup> | &Delta; `Low` | &Delta; `High` 
+|:----------|------------------------:|---------- ---:|---------------:|------------------------:|--------------:|---------------:
+| `Low`     |                 9740448 |        100.0% |         125.6% |                      46 |        100.0% |          35.9%
+| `Medium`  |                 8969108 |         92.1% |         115.6% |                     101 |        219.6% |          78.9%
+| `High`    |                 7756942 |         79.6% |         100.0% |                     128 |        260.9% |         100.0%
+| `Extreme` |                 7418479 |         76.2% |          95.6% |                     751 |       1632.6% |         586.7%
  
 &nbsp;&nbsp;&nbsp;<sup>&dagger;</sup> bytes.<br />
 &nbsp;&nbsp;&nbsp;<sup>&Dagger;</sup> seconds.  Timing done on a MacBook Pro with a 2.66GHz Intel Core 2 Dual CPU.
