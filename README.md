@@ -176,12 +176,13 @@ To use the Xcode iPhone PNG Optimizer Enhancement, simply open your the Build Se
 
 The following results are taken from a real-world iPhone application.  The amount of additional optimization that is possible will vary for each project based on a number of difficult to quantify factors.  The results for each project may differ, sometimes dramatically, from the results below.  You are strongly encouraged to verify whether or not a setting &ge; `Medium` provides any worthwhile benefit for your project.
 
-|  Setting  | Size<sup>&dagger;</sup> | &Delta; `Low` | &Delta; `High` | Time<sup>&Dagger;</sup> | &Delta; `Low` | &Delta; `High` 
-|:----------|------------------------:|---------- ---:|---------------:|------------------------:|--------------:|---------------:
-| `Low`     |                 9740448 |        100.0% |         125.6% |                      46 |        100.0% |          35.9%
-| `Medium`  |                 8969108 |         92.1% |         115.6% |                     101 |        219.6% |          78.9%
-| `High`    |                 7756942 |         79.6% |         100.0% |                     128 |        260.9% |         100.0%
-| `Extreme` |                 7418479 |         76.2% |          95.6% |                     751 |       1632.6% |         586.7%
+<table>
+<tr><th>  Setting  </th><th> Size<sup>&dagger;</sup> </th><th> &Delta; <code>Low</code> </th><th> &Delta; <code>High</code> </th><th> Time<sup>&Dagger;</sup> </th><th> &Delta; <code>Low</code> </th><th> &Delta; <code>High</code></th></tr>
+<tr><td> <code>Low</code>     </td><td>                 9740448 </td><td>        100.0% </td><td>         125.6% </td><td>                      46 </td><td>        100.0% </td><td>          35.9%</td></tr>
+<tr><td> <code>Medium</code>  </td><td>                 8969108 </td><td>         92.1% </td><td>         115.6% </td><td>                     101 </td><td>        219.6% </td><td>          78.9%</td></tr>
+<tr><td> <code>High</code>    </td><td>                 7756942 </td><td>         79.6% </td><td>         100.0% </td><td>                     128 </td><td>        260.9% </td><td>         100.0%</td></tr>
+<tr><td> <code>Extreme</code> </td><td>                 7418479 </td><td>         76.2% </td><td>          95.6% </td><td>                     751 </td><td>       1632.6% </td><td>         586.7%</td></tr>
+</table>
  
 &nbsp;&nbsp;&nbsp;<sup>&dagger;</sup> bytes.<br />
 &nbsp;&nbsp;&nbsp;<sup>&Dagger;</sup> seconds.  Timing done on a MacBook Pro with a 2.66GHz Intel Core 2 Dual CPU.
