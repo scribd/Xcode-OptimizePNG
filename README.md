@@ -178,10 +178,10 @@ The following results are taken from a real-world iPhone application.  The amoun
 
 <table>
 <tr><th>  Setting  </th><th> Size<sup>&dagger;</sup> </th><th> &Delta; <code>Low</code> </th><th> &Delta; <code>High</code> </th><th> Time<sup>&Dagger;</sup> </th><th> &Delta; <code>Low</code> </th><th> &Delta; <code>High</code></th></tr>
-<tr><td> <code>Low</code>     </td><td>                 9740448 </td><td>        100.0% </td><td>         125.6% </td><td>                      46 </td><td>        100.0% </td><td>          35.9%</td></tr>
-<tr><td> <code>Medium</code>  </td><td>                 8969108 </td><td>         92.1% </td><td>         115.6% </td><td>                     101 </td><td>        219.6% </td><td>          78.9%</td></tr>
-<tr><td> <code>High</code>    </td><td>                 7756942 </td><td>         79.6% </td><td>         100.0% </td><td>                     128 </td><td>        260.9% </td><td>         100.0%</td></tr>
-<tr><td> <code>Extreme</code> </td><td>                 7418479 </td><td>         76.2% </td><td>          95.6% </td><td>                     751 </td><td>       1632.6% </td><td>         586.7%</td></tr>
+<tr><td align="left"> <code>Low</code>     </td><td align="right">                 9740448 </td><td align="right">        100.0% </td><td align="right">         125.6% </td><td align="right">                      46 </td><td align="right">        100.0% </td><td align="right">          35.9%</td></tr>
+<tr><td align="left"> <code>Medium</code>  </td><td align="right">                 8969108 </td><td align="right">         92.1% </td><td align="right">         115.6% </td><td align="right">                     101 </td><td align="right">        219.6% </td><td align="right">          78.9%</td></tr>
+<tr><td align="left"> <code>High</code>    </td><td align="right">                 7756942 </td><td align="right">         79.6% </td><td align="right">         100.0% </td><td align="right">                     128 </td><td align="right">        260.9% </td><td align="right">         100.0%</td></tr>
+<tr><td align="left"> <code>Extreme</code> </td><td align="right">                 7418479 </td><td align="right">         76.2% </td><td align="right">          95.6% </td><td align="right">                     751 </td><td align="right">       1632.6% </td><td align="right">         586.7%</td></tr>
 </table>
  
 &nbsp;&nbsp;&nbsp;<sup>&dagger;</sup> bytes.<br />
