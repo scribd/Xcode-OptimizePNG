@@ -104,4 +104,4 @@ if [ $? != 0 ]; then echo "$0:$LINENO: error: Unable to copy '${PLUGIN_SOURCE_EN
 echo "\nNote: Installation was successful!"
 
 XCODE_RUNNING=$(/usr/bin/osascript -e 'if application "Xcode" is running then return "Yes"')
-if [ "${XCODE_RUNNING}" == "Yes" ]; then echo "\nWarning: You must exit and restart Xcode before the new 'Compress PNG Files' Build Setting options are available."; fi;
+if [ "${XCODE_RUNNING}" == "Yes" ]; then echo "\n$0:$LINENO: Warning: You must exit and restart Xcode before the new 'Compress PNG Files' Build Setting options are available."; fi;
