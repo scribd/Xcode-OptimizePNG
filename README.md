@@ -85,9 +85,9 @@ Warning: Consider running this script as 'sudo DEVTOOLS_PATH="$DEVTOOLS_PATH" ".
 
 Installing in to the Xcode Developer Tools at '/Developer4', which was determined by the environment variable DEVTOOLS_PATH.
 
-A backup of     '/Developer4/Platforms/iPhoneOS.platform/Developer/Library/Xcode/Plug-ins/iPhoneOS Build System Support.xcplugin'
-was created at: '/Developer4/Platforms/iPhoneOS.platform/Developer/Library/Xcode/Plug-ins/iPhoneOS_xcplugin_backup_20110621193634_41339.tar.gz'
-./install.sh:90: error: Unable to copy '/Users/johne/projects/scribd/xcode/Xcode-OptimizePNG/plugin-src/copypng' to '/Developer4/Platforms/iPhoneOS.platform/Developer/Library/Xcode/Plug-ins/iPhoneOS Build System Support.xcplugin/Contents/Resources/copypng'.  Aborting.
+A backup of     '/Developer4/Platforms/iPhoneOS.platform/Developer/Library/Xcode/PrivatePlugIns/iPhoneOS Build System Support.xcplugin'
+was created at: '/Developer4/Platforms/iPhoneOS.platform/Developer/Library/Xcode/PrivatePlugIns/iPhoneOS_xcplugin_backup_20110621193634_41339.tar.gz'
+./install.sh:90: error: Unable to copy '/Users/johne/projects/scribd/xcode/Xcode-OptimizePNG/plugin-src/copypng' to '/Developer4/Platforms/iPhoneOS.platform/Developer/Library/Xcode/PrivatePlugIns/iPhoneOS Build System Support.xcplugin/Contents/Resources/copypng'.  Aborting.
 shell% &#9612;
 </pre>
 
@@ -101,8 +101,8 @@ shell% <b>sudo DEVTOOLS_PATH="$DEVTOOLS_PATH" "./install.sh" &crarr;</b>
 Password: &nbsp;<i><b>Enter your password, it will not be displayed.</b></i>
 Installing in to the Xcode Developer Tools at '/Developer4', which was determined by the environment variable DEVTOOLS_PATH.
 
-A backup of     '/Developer4/Platforms/iPhoneOS.platform/Developer/Library/Xcode/Plug-ins/iPhoneOS Build System Support.xcplugin'
-was created at: '/Developer4/Platforms/iPhoneOS.platform/Developer/Library/Xcode/Plug-ins/iPhoneOS_xcplugin_backup_20110621193734_41355.tar.gz'
+A backup of     '/Developer4/Platforms/iPhoneOS.platform/Developer/Library/Xcode/PrivatePlugIns/iPhoneOS Build System Support.xcplugin'
+was created at: '/Developer4/Platforms/iPhoneOS.platform/Developer/Library/Xcode/PrivatePlugIns/iPhoneOS_xcplugin_backup_20110621193734_41355.tar.gz'
 
 Installation was successful!
 
