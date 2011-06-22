@@ -1,0 +1,84 @@
+/**
+    CopyPNGFile build task (iPhone OS Edition)
+
+    Copyright (c) 2008 Apple Inc.
+    All rights reserved.
+
+    ----
+
+    CopyPNGFile build task (Drum and Bass Edition)
+
+    Copyright (c) 2011 Scribd
+    All rights reserved.
+*/
+{	Type = Compiler;
+    Identifier = com.apple.build-tasks.copy-png-file;
+    Name = "CopyPNGFile";
+    Description = "Copies a .png file resource, optionally compressing it.";
+    CommandLine = "copypng [options] $(IPHONE_OPTIMIZE_OPTIONS) [input] [output]";
+    SynthesizeBuildRule = Yes;
+    RuleName = "CopyPNGFile $(ProductResourcesDir)/$(InputFileName) $(InputFileRelativePath)";
+    ExecDescription = "Copying $(InputFileRelativePath)";
+    InputFileTypes = (
+        image.png
+    );
+    OutputPath = "$(ProductResourcesDir)/$(InputFileName)";
+    Options = (
+        {   Name = COMPRESS_PNG_FILES;
+
+// The unmodifed COMPRESS_PNG_FILES .xcscpec setting.
+//
+//            Type = bool;
+//            DefaultValue = NO;
+//            CommandLineArgs = { YES = (-compress); NO = (); };
+
+// The modified COMPRESS_PNG_FILES .xcspec settingS.
+//
+	    Type = Enumeration;
+            Values = (
+                {   Value = "NO"; // Compatibility with the older Boolean.
+                    CommandLineArgs = ("-NO");
+                },
+                {   Value = "YES"; // Compatibility with the older Boolean.
+                    CommandLineArgs = ("-compress", "-YES");
+                },
+
+                {   Value = "None";
+                    // no command line flag in this case; this implies no conversion
+                    CommandLineArgs = ("-None", );
+                },
+/*
+  IMPORTANT: The -compress option MUST come before the -(Low|Medium|High|Extreme)!
+             In the modified `copypng` perl script, the -(Low|Medium|High|Extreme) argument will override the -compress (equivalent to -Low) setting.
+             The unmodified version of the `copypng` perl script silently discards -OPTIONs it does not understand.
+             If the `copypng` perl script is ever reverted / overwritten by and update / upgrade to the old `copypng` script, 
+             the unmodified `copypng` perl script will parse and accept the -compress option and ignore the -(Low|Medium|High|Extreme) option.
+             This is better than completely breaking, but it does so SILENTLY.  There is no obvious way to tell if the `copypng` perl script
+             has been reverted and the expected enhanced PNG compression functionality is no longer being performed.
+*/
+                {   Value = "Low";
+                    CommandLineArgs = ("-compress", "-Low");
+                },
+                {   Value = "Medium";
+                    CommandLineArgs = ("-compress", "-Medium");
+                },
+                {   Value = "High";
+                    CommandLineArgs = ("-compress", "-High");
+                },
+                {   Value = "Extreme";
+                    CommandLineArgs = ("-compress", "-Extreme");
+                },
+	    );
+        },
+
+    );
+    CommandOutputParser = (
+        ("()()(^.*caught libpng error.*)",  emit-error),
+        ("()()(^Could not find file:.*)",  emit-error),
+        ("()()(^Destination file missing)",  emit-error),
+        ("()()(^[^:]+: [^:]+: No such file or directory)",  emit-error),
+        ("()()(^[^:]+: [^:]+: Permission denied)",  emit-error),
+        ("()()(^[^:]+: [^:]+: Is a directory)",  emit-error),
+        ("()()(^Warning:.*)",  emit-warning), // Added to catch warnings about missing `advpngidat` command.
+    );
+}

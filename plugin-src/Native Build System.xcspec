@@ -1,0 +1,59 @@
+/*
+    Native Build System properties for the iOS platform
+
+    Copyright (c) 2008-2010 Apple Inc.  All rights reserved.
+
+    Augments the list of build settings for the native build system with settings specific to the iOS build environment.
+*/
+{
+    Type = BuildSystem;
+    Identifier = com.apple.build-system.native;
+    BasedOn = "default:com.apple.build-system.native";
+    Name = "Native Build System";
+    Properties = (
+    
+    	// Code Signing
+        {   Name = PROVISIONING_PROFILE;
+        },
+    
+        // Linking
+        {   Name = LD_NO_PIE;
+            Type = Boolean;
+            DefaultValue = NO;
+            Category = Linking;
+        },
+        
+        // Deployment
+        {   Name = IPHONEOS_DEPLOYMENT_TARGET;
+            Type = Enumeration;
+            Values = ( "3.0","3.1","3.1.2","3.1.3","3.2","3.2.1","3.2.2","4.0","4.0.1","4.0.2","4.1","4.2","4.3", );
+            ConditionFlavors = ( arch, sdk );
+            // Default value is set dynamically
+            Category = Deployment;
+        },
+        
+        // Packaging
+        {   Name = COMPRESS_PNG_FILES;
+            Category = Packaging;
+// The unmodified COMPRESS_PNG_FILES .xcspec setting.
+//
+//            Type = Boolean;
+//            DefaultValue = YES;
+
+
+// The modified COMPRESS_PNG_FILES .xcspec settingS.
+//
+	    Type = Enumeration;
+	    DefaultValue = "Low";
+// We don't explicitly offer the older Boolean YES and NO values.
+	    Values = ( "None", "Low", "Medium", "High", "Extreme", );
+        },
+        {   Name = TARGETED_DEVICE_FAMILY;
+            Type = Enumeration;
+            Values = ( "1", "2", "1,2" );
+            Category = Deployment;
+            DefaultValue = "$(TARGETED_DEVICE_FAMILY)";
+	        Basic = YES;
+        },
+    );
+}

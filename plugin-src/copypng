@@ -1,0 +1,118 @@
+#!/usr/bin/perl
+#
+#  copypng [options] SRCFILE ... DSTDIR
+#
+#  Copyright (c) 2008 Apple Inc.
+#  All rights reserved.
+#
+#  This script copies one or more PNG image files from the provided source file
+#  paths to the destination directory.  The destination files will have the same
+#  names as the source files.  This script can optionally compress the images as
+#  they are being copied.
+
+# Hacked on 2011/06/17 by johne @ scribd
+#
+# Modified so that this script accepts more than the stock Boolean copy / optimize PNG setting from Xcode.
+#
+# Xcode build setting: 'Compress PNG Files' / $COMPRESS_PNG_FILES, under the Packaging category.
+#
+# Continues to accept and is compatible with the old way this script was invoked prior to modifications.
+# This allows for (the majority of) Xcode projects that use the standard Boolean setting for $COMPRESS_PNG_FILES to work as they were intended,
+# AND if CopyPNGFiles.xcspec is ever reverted / overwritten by an update / upgrade and this (`copypng`) perl script is
+# left unmodified (which would cause it to be invoked the way it used to be invoked before it was modified).
+#
+# The enhanced functionality is exposed via these arguments:
+# -None     // Alias / behavior of the old Xcode Bool == NO setting.
+# -Low      // Alias / behavior of the old Xcode Bool == YES setting.
+# -Medium   // Adds an additional post processing step that recompresses the .png's IDAT chunk using the 7z default engine.
+# -High     // Uses some empirically derived pngcrush -m ### settings that usually result in much better compression + IDAT post processing.
+# -Extreme  // pngcrush with the -brute option + IDAT post processing.  This setting will take a very long time to copy / optimize the .png's!
+
+my $compress = 0;
+my @FILES = ();
+
+# The `advpngidat` command implements the PNG IDAT recompression optimization post processing step via the 7z deflate compression engine.
+# It is part of the scribd forked AdvanceCOMP tools @ https://github.com/scribd/advancecomp
+
+my $PNG_IDAT_postProcessor_executable = "advpngidat";
+my $PNG_IDAT_postProcessor_projectExecutable = "bin/$PNG_IDAT_postProcessor_executable";
+# Prefer the `advpngidat` in $PNG_IDAT_postProcessor_projectExecutable (i.e., $PROJECT_PATH/bin/advpngidat), otherwise try to find `advpngidat` in $PATH.
+my $PNG_IDAT_postProcessor = (-x $PNG_IDAT_postProcessor_projectExecutable) ? $PNG_IDAT_postProcessor_projectExecutable : `which $PNG_IDAT_postProcessor_executable`;
+chomp $PNG_IDAT_postProcessor;               # This is needed to remove the tailing \n from `which ...`.
+my $PNG_IDAT_postProcessor_flags = "-z4 -q"; # -z[0-4], where 4 is the maximum effort.  -q means "be quite".
+my $PNG_IDAT_postProcessor_valid = (-x $PNG_IDAT_postProcessor) ? 1 : 0;
+
+# Gather command line options.
+while( @ARGV ) {
+    
+    $_ = shift @ARGV;
+	
+    next if ( $_ eq "" );
+    
+    if ( $_ =~ /-skip-PNGs/ ) { $compress = 0; next; }
+    if ( $_ eq "-compress" )  { $compress = 1; next; }
+
+    if ( $_ eq "-None" )      { $compress = 0; next; }
+    if ( $_ eq "-Low" )       { $compress = 1; next; }
+    if ( $_ eq "-Medium" )    { $compress = 2; next; }
+    if ( $_ eq "-High" )      { $compress = 3; next; }
+    if ( $_ eq "-Extreme" )   { $compress = 4; next; }
+
+    if ( $_ =~ /^-/ ) {
+    	next;	# unknown option
+    }
+    
+    # save files
+    push @FILES, $_;
+}
+
+$SRCFILE = shift @FILES;	# first file is source
+$DSTFILE = shift @FILES;	# then dest
+
+if ( ! -f $SRCFILE ) {
+	print "Could not find file: $SRCFILE\n";
+	exit 1;
+}
+
+if ( !length($DSTFILE) ) {
+ 	print "Destination file missing\n";
+	exit 1;
+}
+
+$DSTDIR = `dirname "$DSTFILE"`;
+chomp $DSTDIR;
+$DSTDIR .= "/";
+
+# If the iTunesArtwork file ever gets processed by this script, make sure we do not convert it to the -iphone optimized format.
+$OPTIMIZE_FOR_IPHONE = ($SRCFILE =~ /iTunesArtwork$/) ? "" : "-iphone";
+
+# If we could not find the `advpngidat` command, echo a Warning:, but iff $compress > 1 / -Low.
+my $PNG_IDAT_postProcessor_command = $PNG_IDAT_postProcessor_valid ? "$PNG_IDAT_postProcessor $PNG_IDAT_postProcessor_flags \'$DSTFILE\'" : "echo \"Warning: The PNG IDAT recompression executable, '$PNG_IDAT_postProcessor_executable', was not found.\nWarning: Tried '$PNG_IDAT_postProcessor_projectExecutable' (relative to '`pwd`')\nWarning: Also looked in \\\$PATH: '\$PATH'\"";
+
+if ( $compress == 1) {
+# benchmarked at ~1 minute
+    $command = "pngcrush -q $OPTIMIZE_FOR_IPHONE \'$SRCFILE\' \'$DSTFILE\'";
+} elsif ( $compress == 2) {
+# Slower than $compress == 1 / -Low, but not by much.  Typically compresses an additional ~4% - ~6% than $compress == 1 / -Low.
+    $command = "pngcrush -q $OPTIMIZE_FOR_IPHONE \'$SRCFILE\' \'$DSTFILE\';\n$PNG_IDAT_postProcessor_command";
+} elsif ( $compress == 3) {
+# The -m ### arguments to `pngcrush` tell it which of the huge number of combinitorial permutation settings it will try to find the smallest .png.
+# These values were selected by examining the output of a verbose -brute run against Resources/Images/*.png.  The distribution of -m methods that
+# produced the best compression followed a clear power-law distribution (i.e., 90% of the files were compressed by 10% of the -m methods).
+# The best fm # and zs # were chosen, and then the zl (zlib compression setting, think gzip -#) was backed off to 6 from (almost always) 9.
+# This allows pngcrush to compress things much faster, and we post process the smallest pngcrush result using the the 7z compression engine to
+# recompress the .png's IDAT chunk.
+#
+# benchmarked at ~2 to ~2.5 minutes and gets within ~4% to ~6% of $compress == 4 -brute / -Extreme.
+# Typically compresses an additional ~8% - ~10% than $compress == 1 / -Low.
+    $command = "pngcrush -q $OPTIMIZE_FOR_IPHONE -m 81 -m 82 -m 88 -m 77 \'$SRCFILE\' \'$DSTFILE\';\n$PNG_IDAT_postProcessor_command";
+} elsif ( $compress == 4) {
+# benchmariked at ~8 to ~10 minutes and gets only 4% to 6% better than $compress == 3 / -High
+# Typically compresses an additional ~8.25% - ~11% than $compress == 1 / -Low.
+    $command = "pngcrush -q -$OPTIMIZE_FOR_IPHONE -brute \'$SRCFILE\' \'$DSTFILE\';\n$PNG_IDAT_postProcessor_command";
+} else {
+# Obviously the fastest, but not recommended.
+    $command = "cp \'$SRCFILE\' \'$DSTFILE\'";
+}
+
+print `$command`;     ## write out any results
