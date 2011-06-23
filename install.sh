@@ -55,7 +55,7 @@ if [ ${DIFF_COPYPNG} == 0 ] && [ ${DIFF_COPYPNGFILE_XCSPEC} == 0 ] && [ ${DIFF_N
 
 if [ "$1" == "-check" ]; then echo "The enhanced 'Compress PNG Files' Xcode iPhoneOS Build System Support Plug-In in '${DEVELOPER_DIR}' requires updating."; exit 1; fi;
 
-if [ "${UID}" != 0 ]; then
+if [ $(/usr/bin/id -u) != "0" ]; then
   if [ "${DEVELOPER_DIR_SET}" == "Yes" ]; then SUDO_DEVTOOLS="DEVELOPER_DIR=\"\$DEVELOPER_DIR\" "; else SUDO_DEVTOOLS=""; fi;
   echo "Warning: In general, this script must be executed as the super user in order to modify the Xcode Plug-In files.\nWarning: Consider running this script as 'sudo ${SUDO_DEVTOOLS}\"$0\"' instead.\n";
 fi;
